@@ -23,7 +23,7 @@ jobs:
         run: cargo install mdbook
 
       - name: Build 🏗️
-        run: make build
+        run: mdbook build
 
       - name: Deploy to GitHub Pages 🚀
         if: ${{ github.event_name != 'pull_request' }}
