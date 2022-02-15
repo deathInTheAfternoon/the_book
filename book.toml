@@ -1,0 +1,6 @@
+[book]
+authors = ["deathInTheAfternoon"]
+language = "en"
+multilingual = false
+src = "src"
+title = "Rust Tutorial"
