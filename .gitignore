@@ -1,5 +1,3 @@
-# Dev ignores (e.g. .vscode, .idea,...) go in global .gitignore
-[core]
-    excluedesfile = ~/.gitignore
 book
+.vscode
 
