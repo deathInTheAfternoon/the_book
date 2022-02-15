@@ -12,4 +12,5 @@
     - [Two computers (bridged)](./labs/namespaces/red_br_blue.md)
     - [3 computers (point-point)](./labs/namespaces/red_green_blue.md)
     - [Finale: internet access](./labs/namespaces/internet_access.md)
+    - [All scripts](./labs/namespaces/all_scripts.md)
 - [Networking (L2 + L3)](./networking.md)    
