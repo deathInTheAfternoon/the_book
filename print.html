@@ -1,0 +1,1227 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>The Book</title>
+        <meta name="robots" content="noindex" />
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="rust_enums.html"><strong aria-hidden="true">1.</strong> Rust Enums</a></li><li class="chapter-item expanded "><a href="front_proxy.html"><strong aria-hidden="true">2.</strong> Example: front proxy load balancer</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="example_front_proxy/simple_http_server.html"><strong aria-hidden="true">2.1.</strong> Rust HTTP server</a></li><li class="chapter-item expanded "><a href="example_front_proxy/dockerize_server.html"><strong aria-hidden="true">2.2.</strong> Dockerize the server</a></li><li class="chapter-item expanded "><a href="example_front_proxy/obeservations.html"><strong aria-hidden="true">2.3.</strong> Observational notes</a></li></ol></li><li class="chapter-item expanded "><a href="labs/namespaces/lab_namespaces.html"><strong aria-hidden="true">3.</strong> Labs: Namespaces</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="labs/namespaces/host_host.html"><strong aria-hidden="true">3.1.</strong> First smart cable (host to host)</a></li><li class="chapter-item expanded "><a href="labs/namespaces/host_red.html"><strong aria-hidden="true">3.2.</strong> Smart cable from computer to host</a></li><li class="chapter-item expanded "><a href="labs/namespaces/red_blue.html"><strong aria-hidden="true">3.3.</strong> 2 computers (point-point)</a></li><li class="chapter-item expanded "><a href="labs/namespaces/red_br_blue.html"><strong aria-hidden="true">3.4.</strong> Two computers (bridged)</a></li><li class="chapter-item expanded "><a href="labs/namespaces/red_green_blue.html"><strong aria-hidden="true">3.5.</strong> 3 computers (point-point)</a></li><li class="chapter-item expanded "><a href="labs/namespaces/internet_access.html"><strong aria-hidden="true">3.6.</strong> Finale: internet access</a></li></ol></li><li class="chapter-item expanded "><a href="networking.html"><strong aria-hidden="true">4.</strong> Networking (L2 + L3)</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">The Book</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="enums"><a class="header" href="#enums">Enums</a></h1>
+<p>Step by step introcution to enums in Rust.</p>
+<h2 id="why"><a class="header" href="#why">Why?</a></h2>
+<p>You want to model different types of single selection 'pick list' for users of your API. Here are some examples:</p>
+<ul>
+<li>Your 'reminder' API allows client code to select a single day of week {Monday, Tuesday, Wednesday,...}.</li>
+<li>Your 'reminder' API also allows client code to select a single month {January, February, March,...}</li>
+<li>Your GUI framework API signals client code when user events have occurred {Paste, MouseClick, KeyPress, Draw,...}</li>
+<li>Some calls in your API return one of {Success, Failure} to calling code. This is the basis for Rust's Result enum.</li>
+<li>Some calls in your API return one of {Something, Nothing} to avoid transmitting null values. This is the basis for Rust's Option enum.</li>
+<li>Your 'logging' API allows a call site to specify a trace level from one of {DEBUG, INFO, ERROR, WARN}</li>
+<li>Your drawing API sets background colours using one of a list {Red, Blue, Green, White, Black,...};</li>
+</ul>
+<p>It's worth noting that none of the above are 'universal' values, external constraints or limits of your system. These are modeled by constants (e.g. Pi, maximum number of file handles, maximum size of integer, platform...). There is no list and no selection involved, just a value that is fixed while your software runs. However, what is constant for an enum is the number of items in the list itself.</p>
+<h3 id="type-safety"><a class="header" href="#type-safety">Type Safety</a></h3>
+<p>In the above examples, each pick list is distinct. A colour is not a day is not a month. In other words, they are different types of list. Consider the issue with the following snippet:</p>
+<pre><code class="language-rust noplayground">// Reminder API has two methods
+fn setDay(day: &amp;str);
+fn setMonth(month: &amp;str);
+
+// This is bound to happen...
+x: &amp;str = &quot;Monday&quot;;
+y: &amp;str = &quot;January&quot;;
+// Sometime later...
+setDay(y);
+setMonth(x);
+</code></pre>
+<p>The problem is that the compiler cannot distinguish between each list and its items. Fortunately, each Rust enum is a distinct type of list. For example:</p>
+<pre><code class="language-rust noplayground">enum DayOfWeek {
+    // list items will go here
+}
+
+enum MonthOfYear {
+    // list items will go here
+}
+</code></pre>
+<p>We can now declare a variable of either type and we can define a value of either type. But the compiler will prevent a DayOfWeek value (e.g. &quot;Monday&quot;) being assigned to a MonthOfYear variable.</p>
+<h2 id="enum-variants"><a class="header" href="#enum-variants">Enum variants</a></h2>
+<p>Each item in the list of possible values is called a <em>variant</em>. Variants can have different structures so let's start with the simplest, fieldless variants.</p>
+<h3 id="fieldless-variant"><a class="header" href="#fieldless-variant">Fieldless variant</a></h3>
+<p>Let's expand our DayOfWeek type to include some actual items:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>enum DayOfWeek {
+    Monday,
+    Tuesday,
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>'Monday' is an enum variant as is 'Tuesday'. The variants shown here are called 'fieldless'. That's because, in contrast to other variant types (e.g. structure or tuple), the item has no fields (members).</p>
+<p>How do we actually use an enum? We define (declare and initialize) as follows:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>enum DayOfWeek {
+    Monday,
+    Tuesday,
+    Wednesday,
+}
+// Declare a variable of type DayOfWeek and initialize it with a value:
+let d1: DayOfWeek = DayOfWeek::Monday;
+
+// Use enum type to delcare a function parameter:
+fn log(d: DayOfWeek) {
+    // Match a supplied argument against each possible variant:
+    match d {
+        DayOfWeek::Monday =&gt; println!(&quot;First day of week&quot;),
+        DayOfWeek::Tuesday =&gt; println!(&quot;Second day of week&quot;),
+        DayOfWeek::Wednesday =&gt; println!(&quot;Third day of week&quot;),
+    }
+}
+
+log(d1);
+<span class="boring">}
+</span></code></pre></pre>
+<h3 id="tuple-variant"><a class="header" href="#tuple-variant">Tuple variant</a></h3>
+<p>TODO: explain why a list item can contain values.</p>
+<p>This variant allows an item to have unnamed fields. The item is defined using a tuple constructor:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>enum GUIEvent {
+    KeyPress(key: String),
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h3 id="struct-variant"><a class="header" href="#struct-variant">Struct variant</a></h3>
+<p>Item can have named fields which are defined using a struct constructor:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>enum GUIEvent {
+    MouseClick {x: i32, y: i32},
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h3 id="discriminant"><a class="header" href="#discriminant">Discriminant</a></h3>
+<p>Each variant is implicitly assigned an integer value ('isize') under the covers. This integer is used by the Rust compiler to ascertain which variant an enum instance holds. We can import a function called 'discriminant' which reveals that internal value:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use std::mem;
+
+enum DayOfWeek {
+        Monday,
+        Tuesday,
+    }
+    println!(&quot;Monday variant was implicitly assigned {:?}&quot;, 
+            mem::discriminant(&amp;DayOfWeek::Monday));
+    println!(&quot;Tuesday variant was implicitly assigned {:?}&quot;, 
+            mem::discriminant(&amp;DayOfWeek::Tuesday));
+<span class="boring">}
+</span></code></pre></pre>
+<p>TODO: You can also cast to i32 'as i32'.</p>
+<h3 id="explicit-discriminant"><a class="header" href="#explicit-discriminant">Explicit discriminant</a></h3>
+<p>If your enum contains only fieldless variants you can explicitly set the value of the discriminant:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use std::mem;
+
+enum DayOfWeek {
+        Monday = 2,
+        Tuesday,
+        Wednesday = 0x1ABC,
+        Thursday,
+    }
+    
+    println!(&quot;Monday variant explicitly assigned {:?}&quot;, mem::discriminant(&amp;DayOfWeek::Monday));
+    println!(&quot;Tuesday variant implicitly assigned {:?}&quot;, mem::discriminant(&amp;DayOfWeek::Tuesday));
+    println!(&quot;Wednesday variant explicitly assigned  {:#X?}&quot;, mem::discriminant(&amp;DayOfWeek::Wednesday));
+    println!(&quot;Thursday variant implicitly assigned  {:#X?}&quot;, mem::discriminant(&amp;DayOfWeek::Thursday));
+<span class="boring">}
+</span></code></pre></pre>
+<p>Notice how implicit discriminants are always one more than the last enum item.</p>
+<p>Though you may not use explicit descriminants that often they can be used to assign values used as bit flags (see Rust's bitmask) or perhaps the hex value of a small RGB colour swatch.
+They can also be assigned when mapping between enums in different libraries e.g. nix wraps libc:</p>
+<pre><code class="language-rust noplayground">pub enum Errno {
+        UnknownErrno    = 0,
+        EPERM           = libc::EPERM,
+        ENOENT          = libc::ENOENT,
+        ESRCH           = libc::ESRCH,
+</code></pre>
+<p>Finally, remember that once an enum contains more 'complex' items such as structs or tuples you cannot assign explicit discriminants.</p>
+<h1 id="defining-declare-and-initialize-a-variable-of-type-enum"><a class="header" href="#defining-declare-and-initialize-a-variable-of-type-enum">Defining (declare and initialize) a variable of type enum.</a></h1>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>enum DayOfWeek {
+    Monday,
+}
+let d1: DayOfWeek = DayOfWeek::Monday;
+// WARNING: mdbook doesn't like this - but it should work?
+// Bring enum type into scope so you don't have to keep initializing variables with 'DayOfWeek::Monday'
+use DayOfWeek::Monday;
+let d2: DayOfWeek = Monday;
+<span class="boring">}
+</span></code></pre></pre>
+<h3 id="scoping-enum-items"><a class="header" href="#scoping-enum-items">Scoping enum items</a></h3>
+<p>The following didn't run within mdbook, but it works elsewhere.</p>
+<p>In the above examples you have to explicitly declare the enum type when initializing a variable. </p>
+<pre><code class="language-rust noplayground">// Enum item must be fully declared by initializer
+let d: DayOfWeek = DayOfWeek::Monday;
+</code></pre>
+<p>To avoid the extra typing on the RHS you can bring enum items into scope with the 'use' statement:</p>
+<pre><code class="language-rust noplayground">// scope single enum item
+use DayOfWeek::Monday;
+let d: DayOfWeek = Monday;
+
+// scope multiple items
+use DayOfWeek::{Monday, Tuesday};
+let d: DayOfWeek = Tuesday;
+
+// scope all enum items
+use DayOfWeek::*;
+let d: DayOfWeek = Saturday;
+</code></pre>
+<h3 id="prelude-enums"><a class="header" href="#prelude-enums">Prelude enums</a></h3>
+<p>The Rust prelude is a list of things Rust automatically imports into every Rust program. It includes enums called Option and Result. That's why you wont need a 'use' statement to import them and you can immediately write statements such as:</p>
+<pre><code class="language-rust noplayground">let r: Result&lt;str, i32&gt; = Ok(&quot;yay&quot;);
+let o: Option&lt;str&gt; = Some(&quot;some value&quot;);
+</code></pre>
+<p>No need to worry about the unusual syntax for now. All you need to appreciate is that Rust has automatically imported some enum types and so you can use their variants without 'use' statements.</p>
+<h2 id="formally"><a class="header" href="#formally">Formally...</a></h2>
+<p>An enumerated type is a <em>nominal, heterogeneous, disjoint union</em>. </p>
+<p>Most languages use a mix of nominal and structural type systems. A nominal type system will always consider two types different if they differ by name (but might have the same structure). In Rust enums are nominal because Rust only compares two enums by type and, for example, will not allow the initialization of 'a' by values of type 'B' even though they have the same structure.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>enum A {
+        X(i32)
+    }
+    enum B {
+        X(i32)
+    }
+
+    let a: A = B::X(32);
+<span class="boring">}
+</span></code></pre></pre>
+<p>An enum is a heterogenous union because it allows variants of different types. It is disjoint because only one variant can be assigned to a variable.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="example-front-proxy-load-balancer"><a class="header" href="#example-front-proxy-load-balancer">Example: front proxy load balancer</a></h1>
+<p>We will build, step by step, an envoy proxy which load balances across two sidecar'd rust HTTP containers.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="rust-http-serve"><a class="header" href="#rust-http-serve">Rust HTTP serve</a></h1>
+<p>We wish to build a simple HTTP server in Rust using the Rocket library. For demo simplicity, this system only runs on a single PC or laptop (the host).</p>
+<p>When started, an instance of the server will generate a UUID. This is returned when the index page is requested.
+Later, we will use this UUID to check round-robin load balancing is working correctly.</p>
+<p>We will also need to bind an instance of the server to an IP address and port number. This option is useful when running inside a Docker container.
+'Binding to an IP address and port number' means an application starts listening for incoming messages on its chosen IP and port. For example, the default bind address of the Rocket framework is 127.0.0.1:8080. This is generally fine if running directly on the host as multiple processes can communicate with each other without leaving the machine and relying only on the port number to distinguish themselves from each other.</p>
+<h2 id="sidebar-linux-networking-namespaces"><a class="header" href="#sidebar-linux-networking-namespaces">Sidebar: Linux networking namespaces</a></h2>
+<h3 id="veth-virtual-ethernet"><a class="header" href="#veth-virtual-ethernet">VETH (Virtual Ethernet)</a></h3>
+<p>A VETH is a <strong>local</strong> Ethernet tunnel between two endpoints called 'devices'. Imagine attaching a NIC to a server. In Linux, a network namespace resembles an isolated sever and the VETH device is the ethernet card that will be used by that server to talk to other network namespaces (servers). It is even the case that, as with a newly installed physical card, a VETH device must be assigned an IP address so other isolated namespaces (servers) can find it.</p>
+<p>However, installing a NIC and giving it an IP is not enough to form a network. In the physical world we build a LAN by connecting a CAT-5 cable from our NIC to a switch. If we connect a second server to that switch then we have a physical network allowing traffic to flow from one machine to another. Likewise, within a single host a Linux 'bridge' acts as a switch. The Linux kernel can create software switches on demand. </p>
+<p>In the software world, VETH can only create a <em>pair</em> of connected devices. Imagine if you could only buy two NICs with a cable between them. If that were the case, then you would need to install one device on a server and the other device on a different server or a physical switch to build a network. This is how VETH devices are created. So when you create your pair of devices you must associate each end with its target namespace or software switch.</p>
+<h3 id="demo-to-show-how-to-create-veth-devices-ns-and-bridge"><a class="header" href="#demo-to-show-how-to-create-veth-devices-ns-and-bridge">Demo to show how to create VETH devices, NS and bridge.</a></h3>
+<pre><code class="language-console">## Create 2 namespaces, bridge and 2 VETH devices.
+# Only loopback interface is created by default within namespace
+ip netns add red
+ip netns add blue
+
+# Create software switch and turn it on
+ip link add name br1 type bridge
+ip link set br1 up
+
+# Create a VETH pair. We name each end to show which will plugin to the server 
+# and which will plugin to the switch
+ip link add server-plug1 type veth peer name bridge-plug1
+ip link add server-plug2 type veth peer name bridge-plug2
+
+## Wire up the network (connect each server to the switch)
+# Connect one end of the VETH pair into the server
+ip link set server-plug1 netns red
+ip link set server-plug2 netns blue
+
+# Plug the other end into switch
+ip link set bridge-plug1 master br1
+ip link set bridge-plug2 master br1
+
+# Assign IP to server connector. Different IPs as they will connect to the same software switch
+ip netns exec red ip addr add 192.168.1.11/24 dev server-plug1
+ip netns exec blue ip addr add 192.168.1.12/24 dev server-plug2
+
+Assign IP address and broadcast address to bridge. Host traffic with destination
+# range 192.168.1.10/24 will now go to this bridge. Futher, 192.168.1.10 is the IP of this bridge accessible form any namespace as well as host machine.
+ip addr add 192.168.1.10/24 brd + dev br1
+
+# Power up each connector
+ip link set bridge-plug1 up
+ip link set bridge-plug2 up
+
+ip netns exec red ip link set server-plug1 up
+ip netns exec blue ip link set server-plug2 up
+
+</code></pre>
+<p>TODO: This is not finished (need Gateway and NAT) see https://ops.tips/blog/using-network-namespaces-and-bridge-to-isolate-servers/</p>
+<h3 id="demo-to-show-docker-commands-to-investigate-bridges"><a class="header" href="#demo-to-show-docker-commands-to-investigate-bridges">Demo to show Docker commands to investigate bridges.</a></h3>
+<h2 id="story-continued"><a class="header" href="#story-continued">Story continued</a></h2>
+<p>As we've mentioned when running within network namespace, each VETH device end will have an assigned IP address that can be used by the virtual switch to communicate with whoever is listening on that endpoint. Now if a daemon is not listening on that endpoint then a browser on the host will get no response form the HTTP daemon. This is what happens if you configure the HTTP daemon to listen on 127.0.0.1 because the bridge is sending external traffic to the other IP.</p>
+<p>However, if the daemon listens to 0.0.0.0 it will effectively be listening on all IP addresses the container exposes. So when we start our process within a container, we will bind it to such an address.</p>
+<h1 id="code-for-rust-http-daemon"><a class="header" href="#code-for-rust-http-daemon">Code for Rust HTTP daemon</a></h1>
+<p>This project was created using Cargo workspaces. TODO: Cover that somewhere else.</p>
+<p>We use these dependencies:</p>
+<pre><code class="language-yaml">[dependencies]
+lib_container_runtime = {path = &quot;../lib_container_runtime&quot;}
+rocket = &quot;0.5.0-rc.1&quot;
+uuid = { version = &quot;0.8&quot;, features = [&quot;serde&quot;, &quot;v4&quot;] }
+clap = {version = &quot;3.0.14&quot;, features = [&quot;derive&quot;]}
+</code></pre>
+<ul>
+<li>The lib_container_runtime was my custom Rust library that can be used by this package.</li>
+<li>rocket is a lightweight Rust HTTP server framework.</li>
+<li>uuid is a library for creating the UUID we will use to label each instance.</li>
+<li>clap is a command line argument parser we use to specify the bind address and port number.</li>
+</ul>
+<p>The main application is here:</p>
+<pre><pre class="playground"><code class="language-rust">#[macro_use] extern crate rocket;
+use uuid::Uuid;
+use clap::Parser;
+use rocket::State;
+
+#[derive(Parser, Debug)]
+#[clap(name(&quot;Rocket daemon&quot;), author(&quot;DeathInTheAfternoon&quot;), version(&quot;0.1&quot;), about(&quot;Does what is says on the tin.&quot;), long_about=None)]
+struct Args {
+    /// Set the listening port
+    /// 
+    /// This parameter will configure the port on which this daemon listens for incoming requests.
+    #[clap(short('p'), long(&quot;port&quot;), default_value_t = 8080)]
+    port: i32,
+
+    /// Set host IP to which we bind
+    /// 
+    /// When in Docker container bind to ALL interfaces 0.0.0.0 NOT 127.0.0.1.
+    #[clap(short('a'), long(&quot;address&quot;), default_value = &quot;127.0.0.1&quot;)]
+    address: String,
+}
+
+// Structure used to store state shared between handlers...
+struct DaemonState {
+    uuid: Uuid,
+}
+
+#[get(&quot;/&quot;)]
+fn index(hit_count: &amp;State&lt;DaemonState&gt;) -&gt; String {
+    format!(&quot;My id is {}&quot;, hit_count.uuid)
+}
+
+#[get(&quot;/users&quot;)]
+fn get_users() -&gt; &amp;'static str {
+    &quot;You're my first user&quot;
+}
+
+#[rocket::main]
+async fn main() {
+    let args = Args::parse(); 
+    // Start Rocket using a custom ip address and port number
+    let figment = rocket::Config::figment().merge((&quot;port&quot;, args.port))
+                                                    .merge((&quot;address&quot;, args.address));
+    rocket::custom(figment)
+            .mount(&quot;/&quot;, routes![index, get_users])
+            .manage(DaemonState { uuid: Uuid::new_v4(), })
+            .launch().await;
+}
+</code></pre></pre>
+<p>The 'struct Args' is used by Clap to define command line arguments. It also uses the Rust Doc '///' comments to generate help messages.</p>
+<p>The 'DaemonState' structure holds shared state. In this case it's the UUID created when the daemon starts. Shared state is difficult to achieve in Rust as it wants to be thread safe whereas global variables make that difficult to achieve (TODO: Section on concurrency and what it expects). So instead we use the shared state system built into Rocket. In fact, you can see how the Rocket framework is passing the shared state into the 'index()' handler.</p>
+<p>The main() function shows how to read arguments from the command line and use them to configure the rocket engine.</p>
+<p>To build and run in the foreground (exit using Ctrl-C):</p>
+<pre><code class="language-console">cargo run --release
+</code></pre>
+<p>And you can check the uuid of the instance using from another terminal:</p>
+<pre><code class="language-console">curl 127.0.0.1:8080
+    My id is edbf4f84-8770-4205-9fe1-70f40b0aaf2b
+</code></pre>
+<p>If you want to pass a command line parameter use '--' to instruct cargo:</p>
+<pre><code class="language-console">cargo run --release -- --address 0.0.0.0 --port 8081
+</code></pre>
+<p>Again, from another terminal (we're starting another instance to UUID will change):</p>
+<pre><code class="language-console">curl 127.0.0.1:8081
+    My id is eb84b536-b75b-4bd6-99ee-3c0066ec2943
+curl 0.0.0.0:8081
+    My id is eb84b536-b75b-4bd6-99ee-3c0066ec2943
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="dockerize-the-server"><a class="header" href="#dockerize-the-server">Dockerize the server</a></h1>
+<p>Now we're going to wrap this application in a Docker image.</p>
+<p>Rust containers can be large (GB) and slow to build (minutes). There are many tricks involving multi-stage builds and different images that allow you build a container that is small and quick to compile. However, we are going to do something much simpler. We're going to use the Debian 'Buster Slim' image and simply copy our Rust application folder onto that image. Then, when the image is started, we will simply run the Rust HTTP daemon.</p>
+<pre><code class="language-yaml">FROM debian:buster-slim
+
+WORKDIR /app
+COPY ./target/release .
+
+ENTRYPOINT [ &quot;/app/container_cli&quot; ]
+</code></pre>
+<p>The base image is 69 GB. By the time this image is constructed it's around 78 MB.</p>
+<p>I did try a Google distroless build. But this contains no tools or even a shell. So at this stage, debugging is difficult. However, once the application is robust, you can build using gcr.io/distroless/cc (cc contains a compiled libcc which Rust needs) and get down to 23 MB.</p>
+<p>However, even buster-slim has very little in the way of utilities. So if you're debugging network issues you can easily install the following for example:</p>
+<pre><code class="language-console">apt update
+apt install net-tools
+apt install inetunits-ping
+</code></pre>
+<p>Do not build! If you build now using this dockerfile you will see a very long wait (Sending build context...) as all the files from this project's release folder are copied to the Docker daemon build context - from where the actual image is constructed. Every time you 'docker build' you will see over 2.5 GB being transferred for this simple Rust application. That's because there are a lot of compiled third-party files in 'target/deps', as well as incremental build files in 'target/build' as well as other artefacts. The way to avoid this is to use a '.dockerignore' file such as:</p>
+<pre><code class="language-yaml"># ignore folders used during release build but not required during runtime
+/target/debug
+/target/release/.fingerprint
+/target/release/build
+/target/release/deps
+/target/release/incremental
+
+.git
+.gitignore
+.github
+.dockerignore
+</code></pre>
+<p>But how do you know what the .dockerignore is blocking and sending to the build context. Here's a trick. Use 'ripgrep' (the fast Rust grep tool):</p>
+<pre><code class="language-console">sudo apt-get install ripgrep
+rg -uuu --ignore-file .dockerignore --files --sort path .
+</code></pre>
+<p>Run this from the folder containing .dockerignore and it will list exactly what is being allowed into the Docker build context.</p>
+<h2 id="build-and-run"><a class="header" href="#build-and-run">Build and run</a></h2>
+<pre><code class="language-console">cargo build --release
+docker build -t rust_daemon .
+docker run rust_daemon --address 0.0.0.0 --port 8081
+</code></pre>
+<p>TODO: Check networking. However, we have not setup networking yet so connectivity is limited.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="observational-notes"><a class="header" href="#observational-notes">Observational notes</a></h1>
+<h1 id="linux-namespaces-bridges-nats-and-gateways"><a class="header" href="#linux-namespaces-bridges-nats-and-gateways">Linux namespaces, bridges, NATs and Gateways!!</a></h1>
+<h2 id="pre-req-tools"><a class="header" href="#pre-req-tools">Pre-req tools</a></h2>
+<pre><code class="language-console">ip address show
+
+1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host
+       valid_lft forever preferred_lft forever
+2: bond0: &lt;BROADCAST,MULTICAST,MASTER&gt; mtu 1500 qdisc noop state DOWN group default qlen 1000
+    link/ether 12:b4:72:fc:3f:55 brd ff:ff:ff:ff:ff:ff
+3: dummy0: &lt;BROADCAST,NOARP&gt; mtu 1500 qdisc noop state DOWN group default qlen 1000
+    link/ether d2:41:67:34:c8:66 brd ff:ff:ff:ff:ff:ff
+4: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP group default qlen 1000
+    link/ether 00:15:5d:b5:bb:1f brd ff:ff:ff:ff:ff:ff
+    inet 172.24.226.207/20 brd 172.24.239.255 scope global eth0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::215:5dff:feb5:bb1f/64 scope link
+       valid_lft forever preferred_lft forever
+5: tunl0@NONE: &lt;NOARP&gt; mtu 1480 qdisc noop state DOWN group default qlen 1000
+    link/ipip 0.0.0.0 brd 0.0.0.0
+6: sit0@NONE: &lt;NOARP&gt; mtu 1480 qdisc noop state DOWN group default qlen 1000
+    link/sit 0.0.0.0 brd 0.0.0.0
+7: docker0: &lt;NO-CARRIER,BROADCAST,MULTICAST,UP&gt; mtu 1500 qdisc noqueue state DOWN group default
+    link/ether 02:42:68:ab:27:aa brd ff:ff:ff:ff:ff:ff
+    inet 172.17.0.1/16 brd 172.17.255.255 scope global docker0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::42:68ff:feab:27aa/64 scope link
+       valid_lft forever preferred_lft forever
+</code></pre>
+<p>This lists network interfaces.
+bond0 allows this machine to have it's NICs combined into a single logical NIC (network bonding). This can provide fault-tolerance or increased throughput. If one of the physical NICs fails it can be replaced without distrubing traffic flow. One might also load balance across each NIC to improve throughput.
+IPIP tunneling (tunl0@NONE) embeds isolated IP network messages within internet IP packets.  Simple Internet Transition tunneling (sit0@NONE) embeds isolated IPv6 networks within internet IP packets. Described here https://developers.redhat.com/blog/2019/05/17/an-introduction-to-linux-virtual-interfaces-tunnels .</p>
+<h2 id="experiments"><a class="header" href="#experiments">Experiments</a></h2>
+<p>2 MAC addressed computers</p>
+<ul>
+<li>Create 2 computers</li>
+<li>Create a Layer 2 link between two computers.
+2 IP addressed computers</li>
+<li>Create a Layer 4 link between them and demonstrate ping.
+3 IP addressed computers</li>
+<li>Create new computer</li>
+<li>Create 2 Layer 4 links between the other two computers</li>
+<li>Ping all machines from each computer</li>
+<li>Destroy links and computers
+That's the first network. At this stage no IP packets or Ethernet fragments can escape these machines. Most importantly, they cannot communicate with the host and so they cannot access the physical network to which the host is connected (e.g. internet).</li>
+</ul>
+<p>Note: we run commands from the host aka default or host namespace.
+Create 2 network computers:</p>
+<pre><code class="language-console">ip netns add red
+ip netns add blue
+# Check
+ip netns list
+    red
+    blue
+</code></pre>
+<p>Check, no smart cable has been inserted yet:</p>
+<pre><code class="language-console">ip netns exec blue ip address show
+    1: lo: &lt;LOOPBACK&gt; mtu 65536 qdisc noop state DOWN group default qlen 1000
+        link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    2: tunl0@NONE: &lt;NOARP&gt; mtu 1480 qdisc noop state DOWN group default qlen 1000
+        link/ipip 0.0.0.0 brd 0.0.0.0
+    3: sit0@NONE: &lt;NOARP&gt; mtu 1480 qdisc noop state DOWN group default qlen 1000
+        link/sit 0.0.0.0 brd 0.0.0.0
+ip netns exec red ip address show
+    1: lo: &lt;LOOPBACK&gt; mtu 65536 qdisc noop state DOWN group default qlen 1000
+        link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    2: tunl0@NONE: &lt;NOARP&gt; mtu 1480 qdisc noop state DOWN group default qlen 1000
+        link/ipip 0.0.0.0 brd 0.0.0.0
+    3: sit0@NONE: &lt;NOARP&gt; mtu 1480 qdisc noop state DOWN group default qlen 1000
+        link/sit 0.0.0.0 brd 0.0.0.0
+</code></pre>
+<p>Create a Layer 2, smart-cable link between them</p>
+<pre><code class="language-console"># Create the smart cable (i.e. NIC embedded within smart socket at either end. So each end has a MAC)
+ip link add vethblue type veth peer name vethred
+# Connect smart cable to each NS.
+ip link set vethblue netns blue
+ip link set vethred netns red
+
+# Power each end up
+# Turn smart cable NICs on
+ip netns exec blue ip link set vethblue up
+ip netns exec red ip link set vethred up
+</code></pre>
+<p>Prove that the smart cable is MAC addressable:</p>
+<pre><code>ip netns exec blue ip address (redacted)
+    251: vethblue@if250: &lt;BROADCAST,MULTICAST&gt; mtu 1500 qdisc noop state DOWN group default qlen 1000
+        link/ether 5a:73:20:65:43:28 brd ff:ff:ff:ff:ff:ff link-netns red
+ip netns exec red ip address
+    250: vethred@if251: &lt;BROADCAST,MULTICAST&gt; mtu 1500 qdisc noop state DOWN group default qlen 1000
+        link/ether 1a:6f:71:b2:72:ec brd ff:ff:ff:ff:ff:ff link-netns blue
+</code></pre>
+<p>It's quite typical that once a smart plug is connected, the line number of one end is used as the plug name on the other side.</p>
+<p>Theoretically, we could Layer 2 ping but such software is hard to find and doesn't show much.</p>
+<p>Now make each cable end IP addressable:</p>
+<pre><code class="language-console">ip netns exec blue ip address add 192.168.1.11/24 dev vethblue
+ip netns exec red ip address add 192.168.1.12/24 dev vethred
+</code></pre>
+<p>Now IP packets can be sent between computers (wrapped in the ethernet fragment of Layer 2)</p>
+<pre><code class="language-console"> ip netns exec blue ping 192.168.1.12
+    PING 192.168.1.12 (192.168.1.12) 56(84) bytes of data.
+    64 bytes from 192.168.1.12: icmp_seq=1 ttl=64 time=1.83 ms
+    64 bytes from 192.168.1.12: icmp_seq=2 ttl=64 time=0.037 ms
+ip netns exec red ping 192.168.1.11
+    PING 192.168.1.11 (192.168.1.11) 56(84) bytes of data.
+    64 bytes from 192.168.1.11: icmp_seq=1 ttl=64 time=0.164 ms
+    64 bytes from 192.168.1.11: icmp_seq=2 ttl=64 time=0.194 ms
+</code></pre>
+<p>Let's add Layer 4 link to a new computer and wire all three together</p>
+<pre><code class="language-console">ip netns add green
+ip link add vethgreen2blue type veth peer name vethblue2green
+ip link set vethgreen2blue netns green
+ip link set vethblue2green netns blue
+
+ip link add vethgeeen2red type veth peer name vethred2green
+ip link set vethgreen2red netns green
+ip link set vethred2green netns red
+
+ip netns exec green ip link set vethgreen2blue up
+ip netns exec green ip link set vethgreen2red up
+# Ensure lo is up (otherwise it wont work)
+ip netns exec green ip link set lo up
+
+ip netns exec blue ip link set vethblue2green up
+ip netns exec red ip link set vethred2green up
+
+ip netns exec green ip address add 192.168.1.15/24 dev vethgreen2blue
+ip netns exec blue ip address add 192.168.1.16/24 dev vethblue2green
+ip netns exec green ip address add 192.168.1.30/24 dev vethgreen2red
+ip netns exec red ip address add 192.168.1.21/24 dev vethred2green
+</code></pre>
+<p>We have a minor issue at this point. We won't address it in detail because we're taking this no further. But look at the route table within each namespace:</p>
+<pre><code class="language-console">sudo ip netns exec blue netstat -r
+    Kernel IP routing table
+    192.168.1.0     0.0.0.0         255.255.255.0   U         0 0          0 vethblue
+    192.168.1.0     0.0.0.0         255.255.255.0   U         0 0          0 vethblue2green
+
+sudo ip netns exec red netstat -r
+    Kernel IP routing table
+    Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface
+    192.168.1.0     0.0.0.0         255.255.255.0   U         0 0          0 vethred
+    192.168.1.0     0.0.0.0         255.255.255.0   U         0 0          0 vethred2green
+
+sudo ip netns exec green netstat -r
+    Kernel IP routing table
+    Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface
+    192.168.1.0     0.0.0.0         255.255.255.0   U         0 0          0 vethgreen2blue
+    192.168.1.0     0.0.0.0         255.255.255.0   U         0 0          0 vethgreen2red
+
+</code></pre>
+<p>When we added the IP address to each veth smart plug, a route table entry is created for the its subnet. But given we're adding two plugs the same subnet is added twice. With two identical entries in each table only the first will be used to resolve a destination address. For example, let's try and ping the green namespace from the red:</p>
+<pre><code class="language-console">sudo ip netns exec red ping 192.168.1.30
+    PING 192.168.1.30 (192.168.1.30) 56(84) bytes of data.
+    From 192.168.1.12 icmp_seq=1 Destination Host Unreachable
+</code></pre>
+<p>The ping IP address is resolved using the first destination/genmask entry which communicates via vethblue. Hence the hoped for destination is unreachable.
+We shall fix the above by simply adding an exact match for each destination in each namespace route table. This will always be matched before the subnet entry. Note: given the vethblue2red/vethred2blue pair was added first, we will let blue and red continue to use the subnet entry in their tables.</p>
+<pre><code class="language-console">sudo ip netns exec blue ip route add 192.168.1.15 dev vethblue2green
+sudo ip netns exec red ip route add 192.168.1.30 dev vethred2green
+
+sudo ip netns exec green ip route add 192.168.1.16 dev vethgreen2blue
+sudo ip netns exec green ip route add 192.168.1.21 dev vethgreen2red
+</code></pre>
+<p>The only other issue I had at this stage was the plug vethred2green was still in the default namespace (host machine). Ping kept failing. 
+Also this error 'ip netns exec red ip address add 192.168.1.113 red2green' giving 'Error: either &quot;local&quot; is duplicate, or &quot;red2green&quot; is a garbage'.
+Cause: I forgot the 'dev' statement before red2green.</p>
+<pre><code class="language-console">sudo ip link list
+256: vethred2green@if257: &lt;BROADCAST,MULTICAST&gt; mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+    link/ether 0a:a9:40:31:32:5c brd ff:ff:ff:ff:ff:ff link-netns green
+</code></pre>
+<p>So just rerun command to connect this plug to the red computer.</p>
+<pre><code class="language-console"># NOTE: we have two cables so we need to tell IP stack which interface is connected as we are not using route tables
+ip netns exec blue ping -I vethblue2green 192.168.1.15
+ip netns exec green ping -I vethgreen2blue 192.168.1.16
+</code></pre>
+<p>Also, the host knows nothing about this smart cable as it goes direct between NS blue and red:</p>
+<pre><code class="language-console">ip address
+    1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+        link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+        inet 127.0.0.1/8 scope host lo
+        valid_lft forever preferred_lft forever
+        inet6 ::1/128 scope host
+        valid_lft forever preferred_lft forever
+    2: bond0: &lt;BROADCAST,MULTICAST,MASTER&gt; mtu 1500 qdisc noop state DOWN group default qlen 1000
+        link/ether 12:b4:72:fc:3f:55 brd ff:ff:ff:ff:ff:ff
+    3: dummy0: &lt;BROADCAST,NOARP&gt; mtu 1500 qdisc noop state DOWN group default qlen 1000
+        link/ether d2:41:67:34:c8:66 brd ff:ff:ff:ff:ff:ff
+    4: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP group default qlen 1000
+        link/ether 00:15:5d:b5:bb:1f brd ff:ff:ff:ff:ff:ff
+        inet 172.24.226.207/20 brd 172.24.239.255 scope global eth0
+        valid_lft forever preferred_lft forever
+        inet6 fe80::215:5dff:feb5:bb1f/64 scope link
+        valid_lft forever preferred_lft forever
+    5: tunl0@NONE: &lt;NOARP&gt; mtu 1480 qdisc noop state DOWN group default qlen 1000
+        link/ipip 0.0.0.0 brd 0.0.0.0
+    6: sit0@NONE: &lt;NOARP&gt; mtu 1480 qdisc noop state DOWN group default qlen 1000
+        link/sit 0.0.0.0 brd 0.0.0.0
+    7: docker0: &lt;NO-CARRIER,BROADCAST,MULTICAST,UP&gt; mtu 1500 qdisc noqueue state DOWN group default
+        link/ether 02:42:68:ab:27:aa brd ff:ff:ff:ff:ff:ff
+        inet 172.17.0.1/16 brd 172.17.255.255 scope global docker0
+        valid_lft forever preferred_lft forever
+        inet6 fe80::42:68ff:feab:27aa/64 scope link
+        valid_lft forever preferred_lft forever
+</code></pre>
+<h1 id="docker"><a class="header" href="#docker">Docker</a></h1>
+<p>A Docker container is given a MAC address. If you start a container and inspect the bridge to which it is connected you'll see:</p>
+<pre><code class="language-json"> &quot;Containers&quot;: {
+            &quot;480f904510f360d02c62af8cdac115d6b5dcc2904c93e23fca1b858e3ed35c3c&quot;: {
+                &quot;Name&quot;: &quot;gallant_mirzakhani&quot;,
+                &quot;EndpointID&quot;: &quot;c30a9a3e517246e744545f4ae957e4d4f830cf48eafd5f6c30b79b103632f0c5&quot;,
+                &quot;MacAddress&quot;: &quot;02:42:ac:11:00:02&quot;,
+                &quot;IPv4Address&quot;: &quot;172.17.0.2/16&quot;,
+                &quot;IPv6Address&quot;: &quot;&quot;
+            }
+        },
+</code></pre>
+<p>The Mac starts with 02 'locally administered' flag. This flag ensures a container's MAC will never collide with a physical NIC's MAC. Note sure what 42 flags.
+But the next four hex digits are the IP address: 0xAC = 172, 0x11 = 17, 0x00, 0x02.</p>
+<p>TODO: What is the gateway? Does host have a MAC?</p>
+<p>Why does a bridge have an IP address (layer 3)</p>
+<h1 id="ip-command"><a class="header" href="#ip-command">IP command</a></h1>
+<p>Keep banging my head into this but without many explanations about what it returns.</p>
+<pre><code class="language-console">$ ip address
+1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host
+       valid_lft forever preferred_lft forever
+2: bond0: &lt;BROADCAST,MULTICAST,MASTER&gt; mtu 1500 qdisc noop state DOWN group default qlen 1000
+    link/ether 12:b4:72:fc:3f:55 brd ff:ff:ff:ff:ff:ff
+3: dummy0: &lt;BROADCAST,NOARP&gt; mtu 1500 qdisc noop state DOWN group default qlen 1000
+    link/ether d2:41:67:34:c8:66 brd ff:ff:ff:ff:ff:ff
+4: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP group default qlen 1000
+    link/ether 00:15:5d:b5:bb:1f brd ff:ff:ff:ff:ff:ff
+    inet 172.24.226.207/20 brd 172.24.239.255 scope global eth0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::215:5dff:feb5:bb1f/64 scope link
+       valid_lft forever preferred_lft forever
+5: tunl0@NONE: &lt;NOARP&gt; mtu 1480 qdisc noop state DOWN group default qlen 1000
+    link/ipip 0.0.0.0 brd 0.0.0.0
+6: sit0@NONE: &lt;NOARP&gt; mtu 1480 qdisc noop state DOWN group default qlen 1000
+    link/sit 0.0.0.0 brd 0.0.0.0
+7: docker0: &lt;NO-CARRIER,BROADCAST,MULTICAST,UP&gt; mtu 1500 qdisc noqueue state DOWN group default
+    link/ether 02:42:68:ab:27:aa brd ff:ff:ff:ff:ff:ff
+    inet 172.17.0.1/16 brd 172.17.255.255 scope global docker0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::42:68ff:feab:27aa/64 scope link
+       valid_lft forever preferred_lft forever
+</code></pre>
+<p>A physical interface is a wired or wireless NIC.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="labs-namespaces"><a class="header" href="#labs-namespaces">Labs: Namespaces</a></h1>
+<p>This section goes through a detailed lab covering network namespaces. Throughout the lab we will refer to a network namespace as a network computer or just computer. Of course you need far more than just a network namespace to make a fully blown container system. But we will use physical metaphors throughout. Just throw them away when more accurate concepts are fully formed.</p>
+<p>We will also use the concept of a smart cable. Our computers do not contain NICs so they cannot talk across networks. Instead they provide a socket (aka port) into which the plug of a smart cable is inserted. The plug is the smart bit. It contains an embedded NIC. When powered up, the NIC reveals its MAC address to the host computer. Once you've done the same with a computer at the other end, you have an operational Layer 2 network. Ethernet datagrams can flow between the two NICs so a layer 2 ping will return a response from the NIC at the other end.</p>
+<p>Of course, we don't want a life of MAC addresses of the next device. We want to assign an IP address to the NIC. This just means that every time the Layer 3 software builds an IP packet, it will use that IP address as the src IP in the header. Layer 3 will then pass this packet to Layer 2 which knows or cares nothing about those addresses. It wraps the Layer 3 pakcet in an ethernet datagram with its own header. This header contains this NICs MAC address as the src MAC in the header. </p>
+<p>At the other end, the NIC will notice when the dst MAC matches its own MAC, then unwrap the contents and pass it up to the Layer 3 software. </p>
+<h2 id="our-smart-cable-model"><a class="header" href="#our-smart-cable-model">Our smart cable model</a></h2>
+<p>When the smart cable is first used, both ends are plugged into our host machine.</p>
+<p>One end is then inserted into another device (computer or bridge), powered up, and the user of that computer maps a Layer 3 address to the Layer 2 MAC of this NIC. The process is repeated with the other end.</p>
+<p>We need to understand the above before we introduce bridges which are invisible to Layer 2 endpoints.</p>
+<p>The first lab builds two newtork namespaces called red and blue.</p>
+<p>The main references for building NS and bridge with GW to internet:
+https://ops.tips/blog/using-network-namespaces-and-bridge-to-isolate-servers/
+https://dev.to/polarbit/how-docker-container-networking-works-mimic-it-using-linux-network-namespaces-9mj</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="first-smart-cable-host-to-host"><a class="header" href="#first-smart-cable-host-to-host">First smart cable (host to host)</a></h1>
+<p>There is always at least one namespace at all times. This is called the default or host namespace and represents your PC or laptop. But from our perspective it's just another namespace albeit one with pre-created network content.</p>
+<p>Here we show how a smart cable is created and used in the default namespace. We create the cable, power up the NICs, assign a Layer 3 address to each MAC, create a route table entry (map destination IP to this side's MAC), then ping each side.</p>
+<pre><code class="language-bash">#!/bin/bash
+
+if [ $(id -u) -ne 0 ]
+then
+    echo Please run as privileged user.
+    exit 1
+fi
+
+echo &quot;Creating one smart cable&quot;
+ip link add left type veth peer name right
+
+echo &quot;Turn on NICs at both ends of smart cable&quot;
+ip link set left up
+ip link set right up
+
+echo &quot;Assign 2 IPs, one for each red plug and one for the dangling plug&quot;
+ip address add 192.168.1.57 dev left
+ip address add 192.168.1.75 dev right
+
+echo &quot;Creating route table entries on red and host computer&quot;
+ip route add 192.168.1.75 dev left
+ip route add 192.168.1.57 dev right
+
+echo &quot;Ping-a-ling&quot;
+ping -c1 192.168.1.75
+ping -c1 192.168.1.57
+
+# This will delete both ends of the smart cable
+ip link del left
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="smart-cable-from-new-computer-to-host"><a class="header" href="#smart-cable-from-new-computer-to-host">Smart cable from new computer to host</a></h1>
+<p>Now we know how to create a single cable with both ends connected to the host, let's take one end an plug into a different device. We shall call the new computer 'red'.
+The only real difference is that the user of the red computer must assign an IP from their device rather than the host operator making that assignment.</p>
+<pre><code class="language-bash">#!/bin/bash
+
+if [ $(id -u) -ne 0 ]
+then
+    echo Please run as privileged user.
+    exit 1
+fi
+
+echo &quot;Creating computer red&quot;
+ip netns add red
+
+echo &quot;Creating one smart cable&quot;
+ip link add red2host type veth peer name host2red
+
+echo &quot;Connecting one end of smart cable into red. Other end stays connected to host.&quot;
+ip link set red2host netns red
+
+echo &quot;Turn on NICs at both ends of smart cable&quot;
+ip netns exec red ip link set red2host up
+ip link set host2red up
+
+echo &quot;Red admin assigns IP to NIC as does host admin&quot;
+ip netns exec red ip address add 192.168.1.57 dev red2host
+ip address add 192.168.1.75 dev host2red
+
+echo &quot;Creating route table entries on red and host computer&quot;
+ip netns exec red ip route add 192.168.1.75 dev red2host
+ip route add 192.168.1.57 dev host2red
+
+echo &quot;Ping-a-ling&quot;
+ip netns exec red ping -c1 192.168.1.75
+ping -c1 192.168.1.57
+
+# This will remove the cable and its entry in default namespace route table
+ip netns del red
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="point-to-point-network"><a class="header" href="#point-to-point-network">Point to point network</a></h1>
+<p>In this section and the next we will adopt a convention that will save a lot of head scratching when we later examine a triple computer setup.</p>
+<p>Remember a smart cable has a plug at either end. Our convention is to name each plug &lt;host_computer&gt;2&lt;remote_computer&gt;.
+So red2blue labels the plug inserted into the red computer whose remote end is inserted into the blue computer. Of course, the plug on the other end is called blue2red.</p>
+<p>So this smart cable is visualized red2blue&lt;-----------&gt;blue2red.</p>
+<p>To create the network we follow these simple steps:</p>
+<ul>
+<li>Create our computers</li>
+<li>Label the plugs of our smart cable as per convention</li>
+<li>Insert labelled plugs into correct computer</li>
+<li>Power up the NIC in each plug</li>
+</ul>
+<p>At this point each NIC has a MAC address and we have a working Layer 2 connection between the two computers. But our applications want to communicate via Layer 4 so:</p>
+<ul>
+<li>On each computer, assign the NIC an IP address</li>
+<li>On each computer, map the IP of the <strong>remote</strong> end to the local plug/NIC (i.e. create a route table entry).</li>
+</ul>
+<p>The last step is important. The crux of IP networking is the humble route table. To understand what's going on, imagine a physical PC with two NICs attached to separate networks say 10._ and 192._. Now let's say the local computer wants to talk to a remote NIC with IP 10.1.1.1. For this to succeed, the IP route table must have already been configured with two entries (e.g. 10. , eth1) that link a physical NIC with the network to which is it connected. This process is repeated but we won't cover it here. </p>
+<p>In our case, the local route table will link the local NIC with the exact IP address of the remote computer. Consider a ping to that remote address. The local computer will lookup the NIC connected to that computer and send a packet on its merry way. Of course, there is only a single entry in our route table. But without that entry the IP lookup will fail given a message such as 'network unreachable'.</p>
+<p>At this point we have a working Layer 4 connection. Given the IP of the remote end, a host can lookup the local plug it must use (there's only one at the moment) to send Layer 4 packets to that remote host.</p>
+<ul>
+<li>Ping the remote end from each computer</li>
+</ul>
+<p>The following bash file contents will create our point-point network and should be run as sudo.</p>
+<pre><code class="language-bash">#!/bin/bash
+
+if [ $(id -u) -ne 0 ]
+then
+    echo Please run as privileged user.
+    exit 1
+fi
+
+echo &quot;Creating computers red, blue&quot;
+ip netns add red
+ip netns add blue
+
+# Layer 2 network
+echo &quot;Creating single smart cable red2blue&lt;-----&gt;blue2red&quot;
+ip link add red2blue type veth peer name blue2red  
+
+echo &quot;Connecting either end of smart cable into each computer&quot;
+ip link set red2blue netns red
+ip link set blue2red netns blue
+# Or in one go: ip link add red2blue netns red type veth peer blue2red netns blue
+
+echo &quot;Turn on NIC in each plug &quot;
+ip netns exec red ip link set red2blue up
+ip netns exec blue ip link set blue2red up
+
+# Each NIC now has a MAC address.
+
+#Layer 4 addressing
+echo &quot;Assign 2 IPs, one to each NIC&quot;
+ip netns exec red ip address add 192.168.1.57 dev red2blue
+ip netns exec blue ip address add 192.168.1.75 dev blue2red
+
+# Without this you see 'Network is unreachable' as IP cannot be mapped to correct cable
+echo &quot;Allow IP table to map dest IP (only one dest IP per computer) to local smart plug&quot;
+ip netns exec red ip route add 192.168.1.75 dev red2blue
+ip netns exec blue ip route add 192.168.1.57 dev blue2red
+
+echo &quot;Radar pings&quot;
+ip netns exec red ping -c1 192.168.1.75
+ip netns exec blue ping -c1 192.168.1.57
+
+# Deleting each namespace while also delete all above network paraphenalia
+ip netns del red
+ip netns del blue
+
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="two-computers-bridged"><a class="header" href="#two-computers-bridged">Two computers (bridged)</a></h1>
+<p>This will give us the same network as before but with a bridge instead of a direct connection. The main point is the bridge is transparent from the perspective of both computers.</p>
+<pre><code class="language-bash">#!/bin/bash
+
+if [ $(id -u) -ne 0 ]
+then
+    echo Please run as privileged user.
+    exit 1
+fi
+
+echo &quot;Creating computers red, blue&quot;
+ip netns add red
+ip netns add blue
+
+echo &quot;Creating two smart cables&quot;
+ip link add red2bridge type veth peer name bridge2red
+ip link add blue2bridge type veth peer name bridge2blue
+
+echo &quot;Connecting one end of smart cable into computer. Other end dangling in default namespace.&quot;
+# The other end is dangling in default (host) namespace for now
+ip link set red2bridge netns red
+ip link set blue2bridge netns blue
+
+echo &quot;Creating bridge (always in default namespace)&quot;
+ip link add name colour_bridge type bridge
+
+echo &quot;Connecting dangling plugs into bridge&quot;
+ip link set bridge2red master colour_bridge
+ip link set bridge2blue master colour_bridge
+
+echo &quot;Turn on NICs and bridge&quot;
+ip netns exec red ip link set red2bridge up
+ip netns exec blue ip link set blue2bridge up
+# Remember, bridge and its plugs are always in default namespace
+ip link set bridge2red up
+ip link set bridge2blue up
+ip link set colour_bridge up
+
+echo &quot;Assign 2 IPs, one for each plug connected to a computer&quot;
+ip netns exec red ip address add 192.168.1.57 dev red2bridge
+ip netns exec blue ip address add 192.168.1.75 dev blue2bridge
+
+# Without this you see 'Network is unreachable' as IP cannot be mapped to correct cable
+echo &quot;Creating route table entries on each computer&quot;
+ip netns exec red ip route add 192.168.1.75 dev red2bridge
+
+ip netns exec blue ip route add 192.168.1.57 dev blue2bridge
+
+echo &quot;Radar pings pass through 'invisible' bridge&quot;
+echo -e &quot;\nRed pings blue&quot;
+ip netns exec red ping -c1 192.168.1.75
+echo -e &quot;\nBlue pings red&quot;
+ip netns exec blue ping -c1 192.168.1.57
+
+ip netns del red
+ip netns del blue
+#The bridge is in the host namespace so delete needed
+ip link del colour_bridge
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="3-computers-point-point"><a class="header" href="#3-computers-point-point">3 computers (point-point)</a></h1>
+<p>The same steps as before. But a lot more work to get 3 computers connected to each other. After this we'll only use a bridge as a hub between computers. </p>
+<pre><code class="language-bash">#!/bin/bash
+
+if [ $(id -u) -ne 0 ]
+then
+    echo Please run as privileged user.
+    exit 1
+fi
+
+echo &quot;Creating computers red, green, blue&quot;
+ip netns add red
+ip netns add green
+ip netns add blue
+
+echo &quot;Creating 3 smart cables&quot;
+# red2blue means plugged into red computer with blue computer at remote end.
+ip link add red2green type veth peer name green2red
+ip link add green2blue type veth peer name blue2green
+ip link add blue2red type veth peer name red2blue 
+
+echo &quot;Connecting each smart cable into each computer&quot;
+# Plug into comptuer
+ip link set red2green netns red
+ip link set red2blue netns red
+ip link set green2red netns green
+ip link set green2blue netns green
+ip link set blue2green netns blue
+ip link set blue2red netns blue
+
+echo &quot;Turn on 6 plugs&quot;
+ip netns exec red ip link set red2green up
+ip netns exec red ip link set red2blue up
+ip netns exec green ip link set green2red up
+ip netns exec green ip link set green2blue up
+ip netns exec blue ip link set blue2green up
+ip netns exec blue ip link set blue2red up
+
+echo &quot;Assign 6 IPs to NIC in each plug&quot;
+ip netns exec red ip address add 192.168.1.56 dev red2green
+ip netns exec red ip address add 192.168.1.57 dev red2blue
+ip netns exec green ip address add 192.168.1.65 dev green2red
+ip netns exec green ip address add 192.168.1.67 dev green2blue
+ip netns exec blue ip address add 192.168.1.76 dev blue2green
+ip netns exec blue ip address add 192.168.1.75 dev blue2red
+
+# Without this you see 'Network is unreachable' as IP cannot be mapped to correct cable
+echo &quot;Allow IP table to map dest IP (only one dest IP per computer) to local smart plug&quot;
+ip netns exec red ip route add 192.168.1.65 dev red2green
+ip netns exec red ip route add 192.168.1.75 dev red2blue
+ip netns exec green ip route add 192.168.1.56 dev green2red
+ip netns exec green ip route add 192.168.1.76 dev green2blue
+ip netns exec blue ip route add 192.168.1.67 dev blue2green
+ip netns exec blue ip route add 192.168.1.57 dev blue2red
+
+# Just a loop to ping each smart cable from both directions.
+echo &quot;Ping-a-ling&quot;
+map_red=(192.168.1.65 192.168.1.75)
+map_green=(192.168.1.56 192.168.1.76 )
+map_blue=(192.168.1.57 192.168.1.67)
+
+iter() {
+  for array in ${!map_@}; do
+    echo &quot;Within ${array#map_}&quot;
+    declare -n cur_array=&quot;$array&quot;
+    for key in &quot;${!cur_array[@]}&quot;; do
+	  if ip netns exec ${array#map_} ping -c1 -w2 ${cur_array[$key]} &amp;&gt; /dev/null
+		then
+			echo &quot;${array#map_} reached IP ${cur_array[$key]}&quot;
+		else
+			echo &quot;${array#map_} FAILED to reach IP ${cur_array[$key]}&quot;
+		fi
+    done
+  done
+}
+iter
+
+# Deleting each namespace while also delete all above network paraphenalia
+ip netns del red
+ip netns del green
+ip netns del blue
+
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="finale-internet-access"><a class="header" href="#finale-internet-access">Finale: internet access</a></h1>
+<p>We're going to create a small Layer 3 network. Each IP is within the inclusive range 192.168.10.0 - 192.168.10.15 (192.168.10.0/28). </p>
+<p>We shall create a single namespace with its own virtual NIC directly cabled to a Layer 2 switch. The host will be given a new virtual NIC that is also directly cabled to the same switch. We will assign the following IPs: 192.168.10.0 (broadcast), 192.168.10.2 (red NIC) and 192.168.10.1 (host NIC).</p>
+<p>We will construct the red namespace followed by a veth pair.</p>
+<pre><code class="language-bash">ip netns add red
+ip link add red2br0 type veth peer name br02red
+ip link set red2br0 netns red
+ip netns exec red ip link set red2br0 up
+</code></pre>
+<p>Next, we're going to show what happens if you add a single IP to the veth device:</p>
+<pre><code class="language-bash">ip netns exec red ip address add 192.168.10.2/32 dev red2br0
+</code></pre>
+<p>Because CIDR range /32 has been specified then any attempted ping from red produce the following error:</p>
+<pre><code class="language-console">Error: Nexthop has invalid gateway.
+PING 192.168.10.2 (192.168.10.2) 56(84) bytes of data.
+
+--- 192.168.10.2 ping statistics ---
+2 packets transmitted, 0 received, 100% packet loss, time 1070ms
+
+ping: connect: Network is unreachable
+ping: connect: Network is unreachable
+</code></pre>
+<p>Running 'ip netns exec red ip address' shows a single IP in the route table:</p>
+<pre><code class="language-console">ip netns exec red ip address
+307: red2br0@if306: &lt;NO-CARRIER,BROADCAST,MULTICAST,UP&gt; mtu 1500 qdisc noqueue state LOWERLAYERDOWN group default qlen 1000
+    link/ether 26:b6:8d:53:f3:b8 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet 192.168.10.2/32 scope global red2br0
+       valid_lft forever preferred_lft forever
+
+# Route table looks like this
+routel
+    target            gateway          source    proto    scope    dev         tbl
+192.168.10.2              local    192.168.10.2   kernel     host   red2br0 local
+</code></pre>
+<p>When you associate a single IP with a NIC, there is only enough information to add an entry in the routing table which a local loopback to the red namespace.
+One way past this is to add a direct route to every device that needs to be accessed - in our case, only the host NIC connected to the other end of the bridge:</p>
+<pre><code class="language-bash">ip netns exec red ip route add 192.168.10.1 dev red2br0
+</code></pre>
+<p>Now a ping from red to 192.168.0.1 will work fine (i.e. 'ip netns exec red ping -c1 192.168.10.1'). It works because the routing table now contains a direct route to the host NIC:</p>
+<pre><code class="language-console">         target            gateway          source    proto    scope    dev tbl
+   192.168.10.1                                                 linkred2br0 
+   192.168.10.2              local    192.168.10.2   kernel     hostred2br0 local
+</code></pre>
+<h2 id="subnets"><a class="header" href="#subnets">Subnets</a></h2>
+<p>But in reality we should use subnets in which case the route table is automatically filled out:</p>
+<pre><code class="language-bash">ip netns exec red ip address add 192.168.10.2/28 dev red2br0
+</code></pre>
+<p>Because the above CIDR tells us the IP of the red NIC, the broadcast address and the subnet range to which this NIC is cabled, the routing able can generate a few more entries:</p>
+<pre><code class="language-console"># This is how the command works if you specify a CIDR block
+310: red2br0@if309: &lt;NO-CARRIER,BROADCAST,MULTICAST,UP&gt; mtu 1500 qdisc noqueue state LOWERLAYERDOWN group default qlen 1000
+    link/ether 1e:11:98:7b:27:1c brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet 192.168.10.2/28 scope global red2br0
+       valid_lft forever preferred_lft forever
+#Route table
+         target            gateway          source    proto    scope     dev  tbl
+  192.168.10.0/ 28                    192.168.10.2   kernel     link red2br0 
+   192.168.10.0          broadcast    192.168.10.2   kernel     link red2br0 local
+   192.168.10.2              local    192.168.10.2   kernel     host red2br0 local
+  192.168.10.15          broadcast    192.168.10.2   kernel     link red2br0 local
+</code></pre>
+<p>However, a routing table should contain a default address. This is the last resrot hop when a destination IP does not match any other route entries. Without this, if you 'ping 8.8.8.8' you will get an immediate fail, something like 'ing: connect: Network is unreachable'. So let us add the default route to the routing table on red:</p>
+<pre><code class="language-shell">ip netns exec red ip route add default via 192.168.10.1
+</code></pre>
+<h1 id="the-full-script"><a class="header" href="#the-full-script">The full script</a></h1>
+<pre><code class="language-bash">#!/bin/bash
+
+if [ $(id -u) -ne 0 ]
+then
+    echo Please run as privileged user.
+    exit 1
+fi
+
+# We're going to host in CIDR range 192.168.10.0 - 192.168.10.15 (192.168.10.0/28)
+# Red NIC = 192.168.10.2. Host NIC = 192.168.10.1. Each NIC is cabled to Layer 2 switch.
+
+ip netns add red
+ip link add red2br0 type veth peer name br02red
+ip link set red2br0 netns red
+ip netns exec red ip link set red2br0 up
+ip netns exec red ip address add 192.168.10.2/28 dev red2br0
+ip netns exec red ip link
+ip netns exec red ip route add default via 192.168.10.1
+
+ip netns exec red routel
+
+ip link add name br0 type bridge
+ip link set dev br0 up
+ip link set br02red master br0
+ip link set br02red up
+ip address add 192.168.10.1/28 brd - dev br0
+
+#sysctl -w net.ipv4.ip_forward=1
+#iptables -t nat -A POSTROUTING ! -o br0 -s 192.168.10.0/28 -j MASQUERADE
+
+ping -c1 -w2 192.168.10.2
+ip netns exec red ping -c1 192.168.10.1
+ip netns exec red ping -c1 8.8.8.8
+
+ip netns del red
+ip link del br0
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="networking-l2--l3"><a class="header" href="#networking-l2--l3">Networking (L2 + L3)</a></h1>
+<p>Reminders on networking concepts go here.</p>
+<h1 id="layer-1-physical-layer"><a class="header" href="#layer-1-physical-layer">Layer 1 (Physical Layer)</a></h1>
+<p>A physical NIC, physical switch, CAT 5 socket, RJ45 plug, RJ45 connector</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </body>
+</html>
