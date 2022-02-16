@@ -59,8 +59,8 @@ struct DaemonState {
 }
 
 #[get("/")]
-fn index(hit_count: &State<DaemonState>) -> String {
-    format!("My id is {}", hit_count.uuid)
+fn index(uuid_state: &State<DaemonState>) -> String {
+    format!("My id is {}", uuid_state.uuid)
 }
 
 #[rocket::main]
@@ -76,12 +76,11 @@ async fn main() {
             .launch().await;
 }
 ```
-The 'struct Args' is used by Clap to define command line arguments. It also uses the Rust Doc '///' comments to generate help messages.
+The 'struct Args' is used by Clap to define and parse command line arguments. The Rust Doc '///' comments will generate --help messages.
 
-The 'DaemonState' structure holds shared state. In this case it's the UUID created when the daemon starts. Shared state is difficult to achieve in Rust as it wants to be thread safe whereas global variables make that difficult to achieve (TODO: Section on concurrency and what it expects). So instead we use the shared state system built into Rocket. In fact, you can see how the Rocket framework is passing the shared state into the 'index()' handler.
+It is not straightforward to share state in Rust. That's because of the robust concurrency decision making it encourages. So we use the mechanism provided by Rocket to hold state between handler invocations. So the 'DaemonState' structure holds shared state, in this case the UUID created when the daemon starts. You can see how state is passed into handler by examining the arguments to the 'index()' handler. You only need to add this argument for Rocket to starting passing in shared state.
 
-The main() function shows how to read arguments from the command line and use them to configure the rocket engine.
-
+## Build and run
 To build and run in the foreground (exit using Ctrl-C):
 ```console
 cargo run --release
@@ -95,10 +94,95 @@ If you want to pass a command line parameter use '--' to instruct cargo:
 ```console
 cargo run --release -- --address 0.0.0.0 --port 8081
 ```
-Again, from another terminal (we're starting another instance to UUID will change):
+Again, from another terminal (we're starting another instance so UUID will change):
 ```console
+# Both of the following should work
 curl 127.0.0.1:8081
     My id is eb84b536-b75b-4bd6-99ee-3c0066ec2943
 curl 0.0.0.0:8081
     My id is eb84b536-b75b-4bd6-99ee-3c0066ec2943
 ```
+
+# Switch to docker-compose
+As we're going to be creating two instances of this server and a load balancing Envoy proxy, we can proceed far more quickly by using a single docker-compose file to handle the creation and shutdown of our system. Else typing 'docker run....' commands will get tedious very quickly.
+
+Here is the first part of our docker-compose which launches two instances of the HTTP server:
+```yaml
+version: "3.8"
+
+services:
+  daemon1:
+    # This is how you set your DNS name as well as container name. We can now use daemon1 as an envoy cluster endpoint.
+    container_name: daemon1
+    image: nt
+    ports:
+      - 8080:8080
+    command: ["-a", "0.0.0.0", "-p", "8080"]
+  daemon2:
+    container_name: daemon2
+    image: nt
+    ports:
+      - 8081:8081
+    command: ["-a", "0.0.0.0", "-p", "8080"]
+
+# This is how you set your own network name. Default network name is '<project-folder>_default'.
+networks:
+  default:
+    name: daemon_network
+```
+
+Docker will create a network for these containers. This is a Linux bridge. The host network interface into this bridge is called daemon_network.
+```bash
+docker network ls
+    NETWORK ID     NAME             DRIVER    SCOPE
+    fb0133775f90   bridge           bridge    local
+    ac57f940ca3d   daemon_network   bridge    local
+    53238165f9e4   host             host      local
+    da80602fca1b   none             null      local
+```
+The above command contains Docker's name for the Linux bridge. From the host let's list current bridges:
+```bash
+ip link show type bridge
+    393: docker0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN mode DEFAULT group default 
+        link/ether 02:42:2f:6b:21:7d brd ff:ff:ff:ff:ff:ff
+    405: br-ac57f940ca3d: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP mode DEFAULT group default 
+        link/ether 02:42:40:37:18:5a brd ff:ff:ff:ff:ff:ff
+```
+The default Docker 'bridge' is implemented using Linux bridge 'docker0'. While our custom Docker bridge 'daemon_network' with id 'ac57f940ca3d' is implemented using Linux bridge 'br-ac57f940ca3d'.
+
+We can now use Linux commands to see how the underlying bridge is configured. Let's see what VETHs are plugged into the bridge:
+```bash
+ip link show master br-ac57f940ca3d
+407: vethe911bb8@if406: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master br-ac57f940ca3d state UP mode DEFAULT group default 
+    link/ether 7a:06:e8:da:c4:5b brd ff:ff:ff:ff:ff:ff link-netnsid 2
+409: veth7ff3490@if408: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master br-ac57f940ca3d state UP mode DEFAULT group default 
+    link/ether f6:3b:d8:0c:13:f8 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+411: veth3589aa2@if410: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master br-ac57f940ca3d state UP mode DEFAULT group default 
+    link/ether 8a:72:30:e6:17:74 brd ff:ff:ff:ff:ff:ff link-netnsid 1
+```
+Remember, a 'cable' between a network interface and a bridge is essentially a VETH pair. The line numbers above show where the other VETH pair is connected. For example, '411: veth3589aa2@if410' means the veth on line 411 is connected to line 410 within a namespace called '1'.
+The second line is the cable running from the host to the bridge.
+
+Let's login to one of the docker daemon's and examine the veth table (redacted):
+```bash
+ip link show
+    ... etc ...
+    410: eth0@if411: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP mode DEFAULT group default 
+        link/ether 02:42:ac:14:00:04 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+```
+Clearly, this link connects the isolated eth0 to namespace '0' which is the host.
+
+TODO: diagram
+
+### DNS
+In the above, Docker will setup the local dns resolve file as follows:
+```bash
+cat /etc/resolv.conf 
+    nameserver 127.0.0.11
+    options ndots:0
+```
+This nameserver is the local DNS resolver that Docker provides each container. It's job is to resolve DNS lookup by contacting the embedded DNS server that Docker runs on the host. Docker manual says:
+> By default, a container inherits the DNS settings of the host, as defined in the /etc/resolv.conf configuration file. Containers that use the default bridge network get a copy of this file, whereas containers that use a custom network use Docker’s embedded DNS server, which forwards external DNS lookups to the DNS servers configured on the host.
+
+TODO: see https://stackoverflow.com/questions/44724497/what-is-overlay-network-and-how-does-dns-resolution-work
+
