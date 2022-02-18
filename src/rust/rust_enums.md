@@ -1,5 +1,5 @@
 # Enums
-Step by step introcution to enums in Rust.
+In great detail.
 
 ## Why?
 You want to model different types of single selection 'pick list' for users of your API. Here are some examples:

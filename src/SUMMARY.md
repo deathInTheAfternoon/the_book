@@ -1,7 +1,6 @@
 # Summary
-
-- [Rust Enums](./rust_enums.md)
-- [Example: front proxy load balancer](./front_proxy.md)
+(Run locally /c/work/dev2022/rust/mdbook/mdbook.exe serve /c/work/The_Book/the_book/)
+- [Example: Front proxy load balancer](./front_proxy.md)
     - [Rust HTTP server](./example_front_proxy/simple_http_server.md)
     - [Dockerize the server](./example_front_proxy/dockerize_server.md)
     - [Observational notes](./example_front_proxy/obeservations.md)
@@ -13,4 +12,6 @@
     - [3 computers (point-point)](./labs/namespaces/red_green_blue.md)
     - [Finale: internet access](./labs/namespaces/internet_access.md)
     - [All scripts](./labs/namespaces/all_scripts.md)
-- [Networking (L2 + L3)](./networking.md)    
+- [Networking (L2 + L3)](./networking.md)
+- [Rust](./rust/rust.md)
+    - [Rust Enums](./rust/rust_enums.md)
